@@ -1,15 +1,10 @@
 package io.proxy.transformers;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import rx.Observable;
 import rx.Observable.Transformer;
 import rx.functions.Func1;
 
 public class ExternalRequestTransformer implements Transformer<String, String> {
-
-	private static final Logger	LOG	= LoggerFactory.getLogger(ExternalRequestTransformer.class);
 
 	@Override
 	public Observable<String> call(Observable<String> t) {
