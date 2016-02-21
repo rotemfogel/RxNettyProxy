@@ -111,7 +111,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>io.proxy.gw.ProxyServer</mainClass>
+							<mainClass>io.proxy.ProxyServer</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
