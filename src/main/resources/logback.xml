@@ -9,7 +9,7 @@
 	</appender>
 	
 	<logger name="io.reactivex.netty" level="INFO"/>
-	<logger name="io.proxy" level="DEBUG"/>
+	<logger name="com.avantisteam.uprise.bidder" level="INFO"/>
 
 	<root level="INFO">
 		<appender-ref ref="STDOUT" />
