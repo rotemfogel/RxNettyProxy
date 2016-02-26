@@ -13,7 +13,7 @@ public class RequestTransformer implements Transformer<ByteBuf, String> {
 	public Observable<String> call(Observable<ByteBuf> t) {
 		return t.map(t1 -> {
 			// compose object from bytebuf
-			return "{\"a\":1 \"b\":\"2\"}";
+			return t.toString();
 		});
 	}
 }

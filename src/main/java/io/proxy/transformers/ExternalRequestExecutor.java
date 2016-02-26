@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import rx.Observable;
 import rx.Observable.Transformer;
 
-import java.nio.charset.Charset;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -26,7 +25,7 @@ public class ExternalRequestExecutor implements Transformer<String, ResponseData
 	private final static Logger					LOG					= LoggerFactory
 																			.getLogger(ExternalRequestExecutor.class);
 	private final HttpClient<ByteBuf, ByteBuf>	client;
-	
+
 	public ExternalRequestExecutor(final HttpClient<ByteBuf, ByteBuf> client) {
 		this.client = client;
 	}
@@ -45,13 +44,14 @@ public class ExternalRequestExecutor implements Transformer<String, ResponseData
 				request.getHeaders().set(HttpHeaders.Names.CONNECTION,
 						HttpHeaders.Values.KEEP_ALIVE);
 				client.submit(request)
-						.timeout(50, TimeUnit.MILLISECONDS)
-						.flatMap(HttpClientResponse::getContent)
-						.map(buf -> buf.toString(Charset.defaultCharset()))
-						.doOnError((e) -> {
-							if (e instanceof TimeoutException) counter.incrementAndGet();
-						})
-						.forEach(sResp::append);
+                        .timeout(60000, TimeUnit.MILLISECONDS)
+                        .flatMap(HttpClientResponse::getContent)
+                        .doOnError((e) -> {
+                            if (e instanceof TimeoutException) counter.incrementAndGet();
+                        })
+                        .toList()
+                        .flatMap(chunks -> Observable.from(chunks))
+                        .forEach(sResp::append);
 				if (counter.get() > 0) throw new TimeoutException();
 				end = System.currentTimeMillis() - start;
 				if (isEmpty(sResp)) {
